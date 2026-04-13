@@ -1,0 +1,79 @@
+import cv2
+import mediapipe as mp
+import serial
+import time
+import numpy as np
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
+
+# CONFIGURAÇÃO SERIAL
+PORTA_COM = 'COM5' 
+UID_AUTORIZADO = "83FDE312"
+
+try:
+    arduino = serial.Serial(PORTA_COM, 9600, timeout=1)
+    time.sleep(2)
+except:
+    print("Erro na Serial."); exit()
+
+# MODELO POSE
+base_options = python.BaseOptions(model_asset_path='pose_landmarker_full.task')
+options = vision.PoseLandmarkerOptions(base_options=base_options, running_mode=vision.RunningMode.VIDEO)
+detector = vision.PoseLandmarker.create_from_options(options)
+
+def calcular_angulo(a, b, c):
+    a, b, c = np.array(a), np.array(b), np.array(c)
+    radianos = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+    angulo = np.abs(radianos * 180.0 / np.pi)
+    if angulo > 180.0: angulo = 360 - angulo
+    return angulo
+
+def iniciar_exercicio():
+    cap = cv2.VideoCapture(0)
+    contador = 0
+    estagio = "EXTENDIDO"
+    ts = 0
+    
+    print("Exercício Liberado! Faça 10 repetições.")
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret or contador >= 10: break
+
+        frame = cv2.flip(frame, 1)
+        h, w, _ = frame.shape
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        
+        ts += 33
+        res = detector.detect_for_video(mp_image, ts)
+
+        if res.pose_landmarks:
+            p = res.pose_landmarks[0]
+            # Braço direito
+            omb, cot, pul = [p[12].x*w, p[12].y*h], [p[14].x*w, p[14].y*h], [p[16].x*w, p[16].y*h]
+            ang = calcular_angulo(omb, cot, pul)
+
+            if ang > 160: estagio = "EXTENDIDO"
+            if ang < 40 and estagio == "EXTENDIDO":
+                estagio = "CONTRAIDO"
+                contador += 1
+            
+            cv2.line(frame, (int(omb[0]), int(omb[1])), (int(cot[0]), int(cot[1])), (255,255,255), 3)
+            cv2.line(frame, (int(cot[0]), int(cot[1])), (int(pul[0]), int(pul[1])), (255,255,255), 3)
+
+        cv2.putText(frame, f'CONTAGEM: {contador}/10', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.imshow("Rosca Unilateral - Academia IoT", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'): break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Loop de Espera RFID
+print("Aguardando cartão...")
+while True:
+    if arduino.in_waiting > 0:
+        uid = arduino.readline().decode('utf-8').strip().upper()
+        if uid == UID_AUTORIZADO:
+            iniciar_exercicio()
+            print("Sessão finalizada. Aguardando novo aluno...")
+    time.sleep(0.1)
