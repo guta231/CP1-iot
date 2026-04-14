@@ -8,7 +8,7 @@ from mediapipe.tasks.python import vision
 
 # CONFIGURAÇÃO SERIAL
 PORTA_COM = 'COM5' 
-UID_AUTORIZADO = "83FDE312"
+UID_AUTORIZADO = "D6EE4C1F"
 
 try:
     arduino = serial.Serial(PORTA_COM, 9600, timeout=1)
@@ -49,20 +49,20 @@ def iniciar_exercicio():
 
         if res.pose_landmarks:
             p = res.pose_landmarks[0]
-            # Braço direito
-            omb, cot, pul = [p[12].x*w, p[12].y*h], [p[14].x*w, p[14].y*h], [p[16].x*w, p[16].y*h]
-            ang = calcular_angulo(omb, cot, pul)
+            # Perna esquerda
+            qua, joe, tor = [p[28].x*w, p[28].y*h], [p[26].x*w, p[26].y*h], [p[24].x*w, p[24].y*h]
+            ang = calcular_angulo(qua, joe, tor)
 
             if ang > 160: estagio = "EXTENDIDO"
             if ang < 40 and estagio == "EXTENDIDO":
                 estagio = "CONTRAIDO"
                 contador += 1
             
-            cv2.line(frame, (int(omb[0]), int(omb[1])), (int(cot[0]), int(cot[1])), (255,255,255), 3)
-            cv2.line(frame, (int(cot[0]), int(cot[1])), (int(pul[0]), int(pul[1])), (255,255,255), 3)
+            cv2.line(frame, (int(qua[0]), int(qua[1])), (int(joe[0]), int(joe[1])), (255,255,255), 3)
+            cv2.line(frame, (int(joe[0]), int(joe[1])), (int(tor[0]), int(tor[1])), (255,255,255), 3)
 
         cv2.putText(frame, f'CONTAGEM: {contador}/10', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-        cv2.imshow("Rosca Unilateral - Academia IoT", frame)
+        cv2.imshow("Flexora Unilateral - SmartGym", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'): break
 
     cap.release()
