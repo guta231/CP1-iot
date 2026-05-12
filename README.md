@@ -114,3 +114,4 @@ Deve-se realizar as repetições estipuladas no banco (ex: 10 repetições) do e
 
 
 ## Vídeo demonstrativo
+https://youtube.com/shorts/orMU3uC02u0?si=p4dXUH4WKOjTsDPt
