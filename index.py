@@ -91,7 +91,7 @@ while True:
     root.mainloop()
 
     if arduino.in_waiting > 0:
-        root.qqqqqqqqqqqqquit()
+        root.quit()
         uid = arduino.readline().decode('utf-8').strip().upper()
 
         cursor.execute("SELECT nome, exercicio, repeticoes FROM alunos WHERE id = ?", (uid,))
