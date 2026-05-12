@@ -61,7 +61,8 @@ Cartão para leitura <br>
 
 ## Diagrama
 
-<img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/ab250b1e-3356-4790-b2a3-03b633e99b40" /> <br>
+<img width="742" height="387" alt="Diagrama" src="https://github.com/user-attachments/assets/7aef88a8-346c-4192-b200-32b678b0debe" /> <br>
+
 
 ## Instruções
 ### Conexão com Arduino
