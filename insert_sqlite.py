@@ -8,7 +8,7 @@ cursor = db. cursor( )
 cursor.execute("CREATE TABLE IF NOT EXISTS alunos (id TEXT, nome TEXT, exercicio TEXT, repeticoes INTEGER)")
 
 # 3. Insere um aluno (Cadastro Manual)
-cursor.execute("INSERT OR IGNORE INTO alunos VALUES ( 'A95D9B99', 'Naka', 'Agachamentos', '10')")
+cursor.execute("INSERT OR IGNORE INTO alunos VALUES ( 'A95D9B99', 'Naka', 'Rosca Direita', '10')")
 db.commit( ) # Salva no disco
 
 db.close()

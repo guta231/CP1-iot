@@ -105,10 +105,10 @@ Ao executar o programa, o painel em Tkinter abrirá com o status: "Aguardando Lo
 Aproxime o cartão RFID autorizado no leitor. Após o sistema consultar o SQLite e validar o ID, o horário de acesso será gravado. <br>
 A interface então mudará de status para "Pronta para Uso / Treino Ativo", exibirá uma mensagem de boas-vindas com o nome do aluno recuperado do banco e a câmera será aberta disponibilizando a contagem de exercício. <br>
 
-### Exercício (Agachamento)
+### Exercício (Rosca Direita)
 Posicione a webcam de forma que seja visível o exercício sendo realizado <br>
-A interface mostrará a variação do ângulo conforme o exercício <br>
-O sistema conta uma repetição ao atingir a flexão máxima (<40 graus) e a extensão (>160 graus) <br>
+A interface mostrará a variação do ângulo do cotovelo conforme o exercício <br>
+O sistema conta uma repetição ao atingir a flexão máxima (<40 graus) e a extensão (>160 graus) do cotovelo <br>
 O contador de exercícios no painel atualizará a cada nova execução <br>
 Deve-se realizar as repetições estipuladas no banco (ex: 10 repetições) do exercício para finalização do programa <br>
 
