@@ -106,9 +106,9 @@ def exercise_thread():
 
         if res.pose_landmarks:
             p = res.pose_landmarks[0]
-            ombro = [p[12].x * w, p[12].y * h]
-            cotovelo = [p[14].x * w, p[14].y * h]
-            pulso = [p[16].x * w, p[16].y * h]
+            ombro = [p[11].x * w, p[11].y * h]
+            cotovelo = [p[13].x * w, p[13].y * h]
+            pulso = [p[15].x * w, p[15].y * h]
             ang = calcular_angulo(ombro, cotovelo, pulso)
 
             # ── Angle smoothing: moving average to reduce jitter ──
