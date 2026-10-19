@@ -2,3 +2,5 @@ opencv-python
 mediapipe
 numpy
 ultralytics
+pyserial
+paho-mqtt>=2.1
